@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang=“en“>
+<head>
+    <meta charset=“UTF-8“>
+    <meta name=“viewport“ content=“width=device-width, initial-scale=1.0“>
+    <title>RPG Todo Quest</title>
+    <style>
+        body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    color: #333;
+    margin: 0;
+    padding: 20px;
+}
+
+.container {
+    max-width: 600px;
+    margin: auto;
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+h1, h2 {
+    text-align: center;
+}
+
+.task-input {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+input[type=“text“] {
+    width: 70%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+button {
+    padding: 10px 15px;
+    border: none;
+    background-color: #28a745;
+    color: white;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #218838;
+}
+
+.quest-list, .status, .shop {
+    margin-top: 20px;
+}
+    </style>
+</head>
+<body>
+    <div class=“container“>
+        <h1>RPG Todo Quest</h1>
+        <div class=“task-input“>
+            <input type=“text“ id=“task“ placeholder=“Enter your task here...“>
+            <button id=“addTask“>Add Task</button>
+        </div>
+        <div class=“quest-list“>
+            <h2>Your Quests</h2>
+            <ul id=“questList“></ul>
+        </div>
+        <div class=“status“>
+            <h2>Status</h2>
+            <p>HP: <span id=“hp“>100</span></p>
+            <p>XP: <span id=“xp“>0</span></p>
+            <p>Gold: <span id=“gold“>0</span></p>
+        </div>
+        <div class=“shop“>
+            <h2>Shop</h2>
+            <button id=“buyPotion“>Buy Potion (10 Gold)</button>
+        </div>
+    </div>
+    <script>
+        let hp = 100;
+let xp = 0;
+let gold = 0;
+
+document.getElementById('addTask').addEventListener('click', function() {
+    const taskInput = document.getElementById('task');
+    const task = taskInput.value;
+
+    if (task) {
+        const questList = document.getElementById('questList');
+        const listItem = document.createElement('li');
+        listItem.textContent = task;
+
+        const completeButton = document.createElement('button');
+        completeButton.textContent = 'Complete Quest';
+        completeButton.addEventListener('click', function() {
+            battleSimulation();
+            questList.removeChild(listItem);
+        });
+
+        listItem.appendChild(completeButton);
+        questList.appendChild(listItem);
+        taskInput.value = '';
+    }
+});
+
+function battleSimulation() {
+    const success = Math.random() > 0.5; // 50% chance of success
+    if (success) {
+        xp += 10;
+        gold += 5;
+        alert('You defeated the monster! You gained 10 XP and 5 Gold.');
+    } else {
+        hp -= 20;
+        alert('You were defeated by the monster! You lost 20 HP.');
+        if (hp <= 0) {
+            alert('Game Over! You have no HP left.');
+            hp = 0; // Prevent negative HP
+        }
+    }
+    updateStatus();
+}
+
+function updateStatus() {
+    document.getElementById('hp').textContent = hp;
+    document.getElementById('xp').textContent = xp;
+    document.getElementById('gold').textContent = gold;
+}
+
+document.getElementById('buyPotion').addEventListener('click', function() {
+    if (gold >= 10) {
+        gold -= 10;
+        hp += 20;
+        alert('You bought a potion! Restored 20 HP.');
+        updateStatus();
+    } else {
+        alert('Not enough gold to buy a potion.');
+    }
+});
+    </script>
+</body>
+</html>

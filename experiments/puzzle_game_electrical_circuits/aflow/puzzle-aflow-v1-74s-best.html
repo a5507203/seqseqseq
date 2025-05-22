@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang=""en"">
+    <style>
+        body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    text-align: center;
+}
+
+.container {
+    width: 80%;
+    margin: auto;
+}
+
+#grid {
+    width: 300px;
+    height: 300px;
+    border: 2px solid #333;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    grid-template-rows: repeat(5, 1fr);
+    margin: 20px auto;
+}
+
+.grid-cell {
+    border: 1px dashed #ccc;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.component {
+    padding: 10px;
+    background-color: #007bff;
+    color: white;
+    margin: 5px;
+    cursor: grab;
+}
+
+.component:active {
+    cursor: grabbing;
+}
+    </style>
+<head>
+    <meta charset=""UTF-8"">
+    <meta name=""viewport"" content=""width=device-width, initial-scale=1.0"">
+    <title>Circuit Builder Game</title>
+    <!-- <link rel=""stylesheet"" href=""styles.css""> -->
+</head>
+<body>
+    <div class=""container"">
+        <h1>Circuit Builder Game</h1>
+        <div id=""scoreboard"">
+            <p>Score: <span id=""score"">0</span></p>
+            <p>Time: <span id=""timer"">0</span> seconds</p>
+        </div>
+        <div id=""grid""></div>
+        <div id=""components"">
+            <div class=""component"" draggable=""true"" id=""resistor"">Resistor</div>
+            <div class=""component"" draggable=""true"" id=""capacitor"">Capacitor</div>
+            <div class=""component"" draggable=""true"" id=""switch"">Switch</div>
+        </div>
+        <button id=""checkButton"">Check Circuit</button>
+        <button id=""nextButton"" style=""display:none;"">Next Level</button>
+    </div>
+    <script>
+        let score = 0;
+let timer = 0;
+let interval;
+let currentLevel = 0;
+const targetCircuit = [
+    // Define target circuits for each level
+    ['resistor', 'switch', 'capacitor'], // Level 1
+    // Add more levels as needed
+];
+
+document.addEventListener('DOMContentLoaded', () => {
+    const grid = document.getElementById('grid');
+    const components = document.querySelectorAll('.component');
+    const scoreDisplay = document.getElementById('score');
+    const timerDisplay = document.getElementById('timer');
+    const checkButton = document.getElementById('checkButton');
+    const nextButton = document.getElementById('nextButton');
+
+    // Create grid cells
+    for (let i = 0; i < 25; i++) {
+        const cell = document.createElement('div');
+        cell.classList.add('grid-cell');
+        cell.dataset.index = i;
+        grid.appendChild(cell);
+    }
+
+    // Drag and drop functionality
+    components.forEach(component => {
+        component.addEventListener('dragstart', dragStart);
+    });
+
+    const cells = document.querySelectorAll('.grid-cell');
+    cells.forEach(cell => {
+        cell.addEventListener('dragover', dragOver);
+        cell.addEventListener('drop', drop);
+    });
+
+    checkButton.addEventListener('click', checkCircuit);
+    nextButton.addEventListener('click', nextLevel);
+
+    startTimer();
+});
+
+function dragStart(e) {
+    e.dataTransfer.setData('text/plain', e.target.id);
+}
+
+function dragOver(e) {
+    e.preventDefault();
+}
+
+function drop(e) {
+    e.preventDefault();
+    const componentId = e.dataTransfer.getData('text/plain');
+    const component = document.getElementById(componentId);
+    e.target.appendChild(component.cloneNode(true));
+}
+
+function checkCircuit() {
+    const cells = document.querySelectorAll('.grid-cell');
+    const placedComponents = [];
+    cells.forEach(cell => {
+        if (cell.children.length > 0) {
+            placedComponents.push(cell.children[0].id);
+        }
+    });
+
+    if (JSON.stringify(placedComponents) === JSON.stringify(targetCircuit[currentLevel])) {
+        score += 10;
+        alert('Correct Circuit!');
+    } else {
+        alert('Incorrect Circuit. Try Again!');
+    }
+    updateScore();
+}
+
+function updateScore() {
+    document.getElementById('score').innerText = score;
+}
+
+function startTimer() {
+    interval = setInterval(() => {
+        timer++;
+        document.getElementById('timer').innerText = timer;
+    }, 1000);
+}
+
+function nextLevel() {
+    currentLevel++;
+    if (currentLevel < targetCircuit.length) {
+        resetGrid();
+    } else {
+        alert('Congratulations! You completed all levels!');
+        clearInterval(interval);
+    }
+}
+
+function resetGrid() {
+    const cells = document.querySelectorAll('.grid-cell');
+    cells.forEach(cell => {
+        while (cell.firstChild) {
+            cell.removeChild(cell.firstChild);
+        }
+    });
+    // Reset timer and score if needed
+}
+    </script>
+</body>
+</html>
