@@ -1,0 +1,13 @@
+*.pyc
+.zip
+*.log
+
+/.idea
+/generated_example
+/results
+/results
+*.txt
+*.zip
+*.xml
+*.iml
+/results

@@ -1,0 +1,769 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NIPS2025 – The Thirty-Ninth Annual Conference on Neural Information Processing Systems</title>
+  <style>
+    /* Global resets & base styles */
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; background-color: #f9f9f9; }
+    a { color: #0066cc; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    .container { width: 90%; max-width: 1200px; margin: 0 auto; }
+
+    /* Header & Navigation */
+    .site-header { background-color: #fff; border-bottom: 2px solid #e2e2e2; }
+    .site-header .container { display: flex; flex-direction: column; align-items: center; padding: 20px 0; }
+    .site-header h1 { font-size: 1.8rem; text-align: center; color: #222; }
+    .conference-date-location { margin-top: 8px; font-size: 1rem; color: #555; }
+    .navbar { margin-top: 15px; }
+    .navbar ul { list-style: none; display: flex; justify-content: center; gap: 20px; }
+    .navbar li { }
+    .navbar a { padding: 8px 12px; font-weight: bold; transition: background 0.3s; }
+    .navbar a:hover { background-color: #e6f2ff; border-radius: 4px; }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="container">
+      <h1>The Thirty-Ninth Annual Conference on Neural Information Processing Systems (NIPS2025)</h1>
+      <p class="conference-date-location">Dec 2–7, 2025 | San Diego Convention Center, California, United States</p>
+      <nav class="navbar">
+        <ul>
+          <li><a href="#home">Home</a></li>
+          <li><a href="#about">About</a></li>
+          <li><a href="#cfp">Call for Papers</a></li>
+          <li><a href="#program">Program</a></li>
+          <li><a href="#speakers">Speakers</a></li>
+          <li><a href="#registration">Registration</a></li>
+          <li><a href="#venue">Venue</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+</body>
+</html>
+  <style>
+    /* Hero Banner */
+    .hero {
+      background-image: url('images/hero-bg.jpg');
+      background-size: cover;
+      background-position: center;
+      position: relative;
+      color: #fff;
+      text-align: center;
+      padding: 100px 20px;
+    }
+    .hero::after {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background-color: rgba(0, 0, 0, 0.5);
+      z-index: 1;
+    }
+    .hero .hero-content {
+      position: relative;
+      z-index: 2;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    .hero h2 {
+      font-size: 2.5rem;
+      margin-bottom: 16px;
+    }
+    .hero p {
+      font-size: 1.2rem;
+      margin-bottom: 24px;
+    }
+    .btn-cta {
+      display: inline-block;
+      background-color: #0066cc;
+      color: #fff;
+      padding: 12px 24px;
+      border-radius: 4px;
+      font-weight: bold;
+      transition: background 0.3s;
+    }
+    .btn-cta:hover {
+      background-color: #005bb5;
+    }
+
+    /* About Section */
+    #about {
+      padding: 60px 0;
+      background-color: #fff;
+    }
+    #about h2 {
+      font-size: 2rem;
+      margin-bottom: 16px;
+      color: #222;
+    }
+    #about p {
+      font-size: 1rem;
+      color: #555;
+      line-height: 1.6;
+    }
+
+    /* Call for Papers Section */
+    #cfp {
+      padding: 60px 0;
+      background-color: #f0f8ff;
+    }
+    #cfp h2 {
+      font-size: 2rem;
+      margin-bottom: 16px;
+      color: #222;
+    }
+    #cfp ul {
+      list-style: disc inside;
+      color: #555;
+      margin-bottom: 24px;
+    }
+    #cfp .deadlines {
+      margin-top: 16px;
+      font-weight: bold;
+      color: #333;
+    }
+  </style>
+
+  <main class="container">
+    <!-- Hero Banner -->
+    <section class="hero" id="home">
+      <div class="hero-content">
+        <h2>Welcome to NIPS2025</h2>
+        <p>Join leading researchers and practitioners in machine learning and computational neuroscience for six days of talks, workshops, and networking.</p>
+        <a href="#registration" class="btn-cta">Register Now</a>
+      </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about">
+      <h2>About NIPS2025</h2>
+      <p>The Neural Information Processing Systems conference is the premier gathering in machine learning and computational neuroscience. Now in its thirty-ninth year, NIPS2025 brings together top academics, industry leaders, and students to share the latest advances in theory, algorithms, and applications.</p>
+      <p>Hosted at the state-of-the-art San Diego Convention Center, this year’s program features keynote lectures, peer-reviewed presentations, tutorials, and interactive workshops designed to foster collaboration and spark innovation in the global AI community.</p>
+    </section>
+
+    <!-- Call For Papers Section -->
+    <section id="cfp">
+      <h2>Call for Papers</h2>
+      <p>We invite submissions of high-quality research contributions in all areas of machine learning, deep learning, and computational neuroscience. Topics of interest include (but are not limited to):</p>
+      <ul>
+        <li>Supervised and unsupervised learning</li>
+        <li>Reinforcement learning and sequential decision-making</li>
+        <li>Deep learning architectures and optimization</li>
+        <li>Probabilistic models and Bayesian methods</li>
+        <li>Neuroscience-inspired algorithms</li>
+        <li>Applications in vision, language, robotics, and more</li>
+      </ul>
+      <p class="deadlines">Submission Deadline: June 15, 2025 | Notification: August 1, 2025 | Camera-Ready: September 1, 2025</p>
+    </section>
+
+  <style>
+    /* Program Section Styles */
+    #program {
+      padding: 60px 0;
+      background-color: #fff;
+    }
+    #program h2 {
+      font-size: 2rem;
+      margin-bottom: 24px;
+      color: #222;
+      text-align: center;
+    }
+    .program-day {
+      margin-bottom: 40px;
+    }
+    .program-day h3 {
+      font-size: 1.5rem;
+      color: #0066cc;
+      margin-bottom: 12px;
+    }
+    .session-list {
+      list-style: none;
+      padding-left: 0;
+    }
+    .session-list li {
+      margin-bottom: 8px;
+      font-size: 1rem;
+      color: #555;
+    }
+    .time {
+      font-weight: bold;
+      color: #333;
+    }
+    .location {
+      font-style: italic;
+      color: #777;
+    }
+  </style>
+
+  <!-- Program Overview Section -->
+  <section id="program">
+    <h2>Program Overview</h2>
+
+    <div class="program-day">
+      <h3>Tuesday, Dec 2, 2025</h3>
+      <ul class="session-list">
+        <li><span class="time">08:30–10:30</span> Tutorials I <span class="location">(Rooms A1–A3)</span></li>
+        <li><span class="time">10:45–11:45</span> Opening Keynote: Advances in Large-Scale ML <span class="location">(Main Hall)</span></li>
+        <li><span class="time">12:00–13:30</span> Lunch Break <span class="location">(Exhibit Hall)</span></li>
+        <li><span class="time">13:30–17:00</span> Workshops & Poster Setup <span class="location">(Rooms B1–B5)</span></li>
+      </ul>
+    </div>
+
+    <div class="program-day">
+      <h3>Wednesday, Dec 3, 2025</h3>
+      <ul class="session-list">
+        <li><span class="time">09:00–10:00</span> Keynote: Bayesian Deep Learning <span class="location">(Main Hall)</span></li>
+        <li><span class="time">10:15–12:30</span> Oral Paper Sessions I <span class="location">(Rooms C1–C4)</span></li>
+        <li><span class="time">12:30–14:00</span> Lunch & Poster Viewing <span class="location">(Exhibit Hall)</span></li>
+        <li><span class="time">14:00–17:30</span> Oral Paper Sessions II & Poster Sessions <span class="location">(Multiple Rooms)</span></li>
+      </ul>
+    </div>
+
+    <div class="program-day">
+      <h3>Thursday, Dec 4, 2025</h3>
+      <ul class="session-list">
+        <li><span class="time">08:45–10:00</span> Tutorial II <span class="location">(Room A1)</span></li>
+        <li><span class="time">10:15–11:15</span> Keynote: Reinforcement Learning Frontiers <span class="location">(Main Hall)</span></li>
+        <li><span class="time">11:30–13:00</span> Oral Paper Sessions III <span class="location">(Rooms C2–C5)</span></li>
+        <li><span class="time">13:00–14:30</span> Lunch Break & Sponsor Exhibits <span class="location">(Exhibit Hall)</span></li>
+        <li><span class="time">14:30–17:00</span> Workshops Continuation <span class="location">(Rooms D1–D3)</span></li>
+      </ul>
+    </div>
+
+    <div class="program-day">
+      <h3>Friday, Dec 5, 2025</h3>
+      <ul class="session-list">
+        <li><span class="time">09:00–10:00</span> Keynote: Neuroscience-Inspired AI <span class="location">(Main Hall)</span></li>
+        <li><span class="time">10:15–12:30</span> Oral Paper Sessions IV <span class="location">(Rooms C1–C4)</span></li>
+        <li><span class="time">12:30–14:00</span> Lunch & Poster Viewing <span class="location">(Exhibit Hall)</span></li>
+        <li><span class="time">14:00–17:30</span> Panel Discussion: Ethics in AI <span class="location">(Room B2)</span></li>
+      </ul>
+    </div>
+
+    <div class="program-day">
+      <h3>Saturday, Dec 6, 2025</h3>
+      <ul class="session-list">
+        <li><span class="time">09:00–12:00</span> Student Research Competition <span class="location">(Rooms E1–E3)</span></li>
+        <li><span class="time">12:00–13:30</span> Lunch & Networking <span class="location">(Exhibit Hall)</span></li>
+        <li><span class="time">13:30–17:00</span> Tutorials III & Industry Seminars <span class="location">(Various Rooms)</span></li>
+      </ul>
+    </div>
+
+    <div class="program-day">
+      <h3>Sunday, Dec 7, 2025</h3>
+      <ul class="session-list">
+        <li><span class="time">09:00–11:00</span> Closing Keynote & Awards Ceremony <span class="location">(Main Hall)</span></li>
+        <li><span class="time">11:15–12:30</span> Final Poster Session <span class="location">(Exhibit Hall)</span></li>
+        <li><span class="time">12:30–14:00</span> Farewell Lunch <span class="location">(Outdoor Terrace)</span></li>
+      </ul>
+    </div>
+  </section>
+  <style>
+    /* Featured Speakers Section Styles */
+    #speakers {
+      padding: 60px 0;
+      background-color: #f0f8ff;
+    }
+    #speakers h2 {
+      font-size: 2rem;
+      margin-bottom: 24px;
+      color: #222;
+      text-align: center;
+    }
+    .speakers-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+      margin-top: 40px;
+    }
+    .speaker-card {
+      background-color: #fff;
+      border: 1px solid #e2e2e2;
+      border-radius: 8px;
+      padding: 20px;
+      text-align: center;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    }
+    .speaker-photo {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin-bottom: 16px;
+    }
+    .speaker-name {
+      font-size: 1.2rem;
+      font-weight: bold;
+      color: #0066cc;
+      margin-bottom: 8px;
+    }
+    .speaker-title {
+      font-size: 1rem;
+      color: #333;
+      margin-bottom: 4px;
+    }
+    .speaker-affiliation {
+      font-size: 0.9rem;
+      color: #555;
+      margin-bottom: 12px;
+      font-style: italic;
+    }
+    .speaker-bio {
+      font-size: 0.9rem;
+      color: #666;
+      line-height: 1.4;
+    }
+  </style>
+
+  <!-- Featured Speakers Section -->
+  <section id="speakers">
+    <h2>Featured Speakers</h2>
+    <div class="speakers-grid">
+      <div class="speaker-card">
+        <img src="images/speaker1.jpg" alt="Demis Hassabis" class="speaker-photo">
+        <div class="speaker-name">Demis Hassabis</div>
+        <div class="speaker-title">Co-founder & CEO, DeepMind</div>
+        <div class="speaker-affiliation">DeepMind, London, UK</div>
+        <p class="speaker-bio">Pioneering research in reinforcement learning and neuroscience-inspired AI. His work spans from AlphaGo to advanced generative models.</p>
+      </div>
+      <div class="speaker-card">
+        <img src="images/speaker2.jpg" alt="Yann LeCun" class="speaker-photo">
+        <div class="speaker-name">Yann LeCun</div>
+        <div class="speaker-title">Chief AI Scientist</div>
+        <div class="speaker-affiliation">Meta Platforms, USA</div>
+        <p class="speaker-bio">One of the founders of convolutional neural networks and modern deep learning. Recipient of the Turing Award for breakthroughs in AI.</p>
+      </div>
+      <div class="speaker-card">
+        <img src="images/speaker3.jpg" alt="Fei-Fei Li" class="speaker-photo">
+        <div class="speaker-name">Fei-Fei Li</div>
+        <div class="speaker-title">Professor & Co-Director, AI Lab</div>
+        <div class="speaker-affiliation">Stanford University, USA</div>
+        <p class="speaker-bio">Leader in computer vision and cognitive neuroscience. Co-creator of ImageNet and advocate for human-centered AI research.</p>
+      </div>
+      <div class="speaker-card">
+        <img src="images/speaker4.jpg" alt="Geoffrey Hinton" class="speaker-photo">
+        <div class="speaker-name">Geoffrey Hinton</div>
+        <div class="speaker-title">Emeritus Professor</div>
+        <div class="speaker-affiliation">University of Toronto, Canada</div>
+        <p class="speaker-bio">Often called the "Godfather of Deep Learning," his contributions laid the foundation for modern neural network architectures and backpropagation.</p>
+      </div>
+    </div>
+  </section>
+
+<style>
+  /* Registration Section Styles */
+  #registration {
+    padding: 60px 0;
+    background-color: #fff;
+  }
+  #registration h2 {
+    font-size: 2rem;
+    margin-bottom: 16px;
+    color: #222;
+    text-align: center;
+  }
+  .registration-deadlines {
+    text-align: center;
+    margin-bottom: 32px;
+    font-size: 0.95rem;
+    color: #555;
+  }
+  .pricing-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 24px;
+    max-width: 1000px;
+    margin: 0 auto;
+  }
+  .pricing-card {
+    background-color: #f0f8ff;
+    border: 1px solid #e2e2e2;
+    border-radius: 8px;
+    padding: 24px;
+    text-align: center;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  .plan-name {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #0066cc;
+    margin-bottom: 12px;
+  }
+  .price {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #222;
+    margin: 16px 0;
+  }
+  .features {
+    list-style: none;
+    padding: 0;
+    margin-bottom: 20px;
+    color: #555;
+    text-align: left;
+  }
+  .features li {
+    margin-bottom: 8px;
+    font-size: 0.95rem;
+  }
+  .btn-register {
+    display: inline-block;
+    background-color: #0066cc;
+    color: #fff;
+    padding: 10px 20px;
+    border-radius: 4px;
+    font-weight: bold;
+    transition: background 0.3s;
+    text-decoration: none;
+  }
+  .btn-register:hover {
+    background-color: #005bb5;
+  }
+</style>
+
+<!-- Registration Section -->
+<section id="registration">
+  <h2>Registration</h2>
+  <p class="registration-deadlines">
+    Early Bird Deadline: August 15, 2025 | Regular Registration: August 16 – October 31, 2025 | On-site: Dec 2–7, 2025
+  </p>
+  <div class="pricing-grid">
+    <div class="pricing-card">
+      <div>
+        <div class="plan-name">Student</div>
+        <div class="price">$200</div>
+        <ul class="features">
+          <li>Access to all sessions</li>
+          <li>Workshop & tutorial entry</li>
+          <li>Digital proceedings</li>
+          <li>Poster & networking events</li>
+        </ul>
+      </div>
+      <a href="#" class="btn-register">Register Now</a>
+    </div>
+
+    <div class="pricing-card">
+      <div>
+        <div class="plan-name">Academic</div>
+        <div class="price">$500</div>
+        <ul class="features">
+          <li>Full conference access</li>
+          <li>Conference banquet</li>
+          <li>Printed & digital proceedings</li>
+          <li>Invitation to mixers</li>
+        </ul>
+      </div>
+      <a href="#" class="btn-register">Register Now</a>
+    </div>
+
+    <div class="pricing-card">
+      <div>
+        <div class="plan-name">Industry</div>
+        <div class="price">$800</div>
+        <ul class="features">
+          <li>All academic benefits</li>
+          <li>Premium seating at keynotes</li>
+          <li>Exhibitor networking lunch</li>
+          <li>Company logo in program</li>
+        </ul>
+      </div>
+      <a href="#" class="btn-register">Register Now</a>
+    </div>
+  </div>
+</section>
+<style>
+  /* Venue Section Styles */
+  #venue {
+    padding: 60px 0;
+    background-color: #fff;
+  }
+  #venue h2 {
+    font-size: 2rem;
+    margin-bottom: 24px;
+    color: #222;
+    text-align: center;
+  }
+  .venue-map {
+    width: 100%;
+    max-width: 1000px;
+    height: 400px;
+    margin: 0 auto 40px;
+    border: 1px solid #e2e2e2;
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  .venue-details {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 40px;
+    max-width: 1000px;
+    margin: 0 auto;
+  }
+  .transport, .lodging {
+    background-color: #f0f8ff;
+    padding: 24px;
+    border-radius: 8px;
+    border: 1px solid #e2e2e2;
+  }
+  .transport h3, .lodging h3 {
+    font-size: 1.4rem;
+    color: #0066cc;
+    margin-bottom: 16px;
+  }
+  .transport-list, .hotel-grid {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  .transport-list li {
+    margin-bottom: 12px;
+    color: #555;
+    line-height: 1.5;
+  }
+  .hotel-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 20px;
+  }
+  .hotel-card {
+    background-color: #fff;
+    border: 1px solid #e2e2e2;
+    border-radius: 8px;
+    padding: 16px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  }
+  .hotel-name {
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: #222;
+    margin-bottom: 8px;
+  }
+  .hotel-info {
+    font-size: 0.95rem;
+    color: #555;
+    line-height: 1.4;
+  }
+</style>
+
+<!-- Venue Section -->
+<section id="venue">
+  <h2>Venue & Travel Information</h2>
+  <div class="venue-map">
+    <iframe
+      src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3345.123456789012!2d-117.1630564848153!3d32.70776388102509!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x80dc0733a1abcdef%3A0x1234567890abcdef!2sSan%20Diego%20Convention%20Center!5e0!3m2!1sen!2sus!4v1610000000000"
+      width="100%" height="100%" frameborder="0" style="border:0;" allowfullscreen="" aria-hidden="false" tabindex="0">
+    </iframe>
+  </div>
+  <div class="venue-details">
+    <div class="transport">
+      <h3>Getting There</h3>
+      <ul class="transport-list">
+        <li><strong>By Air:</strong> San Diego International Airport (SAN) is 4 miles from the Convention Center. Taxis, rideshares, and shuttles available at baggage claim.</li>
+        <li><strong>By Train:</strong> Amtrak’s Pacific Surfliner stops at Santa Fe Depot, a 10-minute walk from the venue.</li>
+        <li><strong>By Car:</strong> On-site parking at the Convention Center; nearby garages on First Ave and Park Blvd. Expect weekday peak rates.</li>
+        <li><strong>Public Transit:</strong> Metropolitan Transit System (MTS) buses and trolleys stop nearby (Bus 923, Trolley Green Line to Convention Center Station).</li>
+      </ul>
+    </div>
+    <div class="lodging">
+      <h3>Recommended Hotels</h3>
+      <div class="hotel-grid">
+        <div class="hotel-card">
+          <div class="hotel-name">Hilton San Diego Bayfront</div>
+          <div class="hotel-info">0.2 miles • From $249/night • Waterfront views, free Wi-Fi, 24-hr fitness center</div>
+        </div>
+        <div class="hotel-card">
+          <div class="hotel-name">Marriott Marquis San Diego Marina</div>
+          <div class="hotel-info">0.1 miles • From $269/night • Direct dockside access, two pools, business center</div>
+        </div>
+        <div class="hotel-card">
+          <div class="hotel-name">Manchester Grand Hyatt</div>
+          <div class="hotel-info">0.3 miles • From $230/night • Bay views, rooftop pool, spa services</div>
+        </div>
+        <div class="hotel-card">
+          <div class="hotel-name">Westin San Diego Gaslamp Quarter</div>
+          <div class="hotel-info">0.6 miles • From $215/night • Historic district, complimentary breakfast, fitness studio</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<style>
+  /* Contact Section Styles */
+  #contact {
+    padding: 60px 0;
+    background-color: #f0f8ff;
+  }
+  #contact h2 {
+    font-size: 2rem;
+    margin-bottom: 24px;
+    color: #222;
+    text-align: center;
+  }
+  .contact-form {
+    max-width: 600px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  .contact-form label {
+    font-size: 0.95rem;
+    color: #333;
+  }
+  .contact-form input,
+  .contact-form textarea,
+  .contact-form select {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 1rem;
+    transition: border-color 0.3s, box-shadow 0.3s;
+  }
+  .contact-form input:focus,
+  .contact-form textarea:focus,
+  .contact-form select:focus {
+    outline: none;
+    border-color: #0066cc;
+    box-shadow: 0 0 0 2px rgba(0, 102, 204, 0.2);
+  }
+  .contact-form .error {
+    border-color: #e74c3c;
+  }
+  .contact-form .error-message {
+    font-size: 0.85rem;
+    color: #e74c3c;
+    display: none;
+  }
+  .contact-form button {
+    align-self: flex-start;
+    background-color: #0066cc;
+    color: #fff;
+    padding: 12px 24px;
+    border: none;
+    border-radius: 4px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.3s;
+  }
+  .contact-form button:hover {
+    background-color: #005bb5;
+  }
+</style>
+
+<!-- Contact Section -->
+<section id="contact">
+  <h2>Contact Us</h2>
+  <form class="contact-form" action="#" method="post" novalidate>
+    <div class="form-group">
+      <label for="name">Name *</label>
+      <input type="text" id="name" name="name" placeholder="Your full name" required>
+      <span class="error-message">Please enter your name.</span>
+    </div>
+    <div class="form-group">
+      <label for="email">Email *</label>
+      <input type="email" id="email" name="email" placeholder="you@example.com" required>
+      <span class="error-message">Please enter a valid email.</span>
+    </div>
+    <div class="form-group">
+      <label for="subject">Subject *</label>
+      <select id="subject" name="subject" required>
+        <option value="">-- Select Inquiry Type --</option>
+        <option value="general">General Inquiry</option>
+        <option value="registration">Registration Help</option>
+        <option value="sponsorship">Sponsorship & Exhibits</option>
+        <option value="press">Press & Media</option>
+      </select>
+      <span class="error-message">Please select a subject.</span>
+    </div>
+    <div class="form-group">
+      <label for="message">Message *</label>
+      <textarea id="message" name="message" rows="6" placeholder="Write your message here..." required></textarea>
+      <span class="error-message">Please enter a message.</span>
+    </div>
+    <button type="submit">Send Message</button>
+  </form>
+</section>
+<style>
+  /* Footer Styles */
+  .site-footer {
+    background-color: #222;
+    color: #ddd;
+    padding: 40px 0;
+    font-size: 0.9rem;
+  }
+  .site-footer a {
+    color: #fff;
+    text-decoration: none;
+  }
+  .site-footer a:hover {
+    text-decoration: underline;
+  }
+  .footer-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  .footer-column h4 {
+    margin-bottom: 12px;
+    color: #fff;
+    font-size: 1.1rem;
+  }
+  .footer-column ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  .footer-column li {
+    margin-bottom: 8px;
+  }
+  .footer-bottom {
+    text-align: center;
+    margin-top: 30px;
+    border-top: 1px solid #444;
+    padding-top: 20px;
+    color: #777;
+  }
+</style>
+
+<footer class="site-footer" id="footer">
+  <div class="container footer-container">
+    <div class="footer-column">
+      <h4>About NIPS2025</h4>
+      <p>The Neural Information Processing Systems Foundation hosts the premier conference on machine learning and computational neuroscience. Dec 2–7, 2025 in San Diego, CA.</p>
+      <p>Organizer: Neural Information Processing Systems Foundation</p>
+    </div>
+    <div class="footer-column">
+      <h4>Connect With Us</h4>
+      <ul>
+        <li><a href="https://twitter.com/nipsconf" target="_blank" rel="noopener">Twitter</a></li>
+        <li><a href="https://www.linkedin.com/company/nips-conference" target="_blank" rel="noopener">LinkedIn</a></li>
+        <li><a href="https://www.facebook.com/nipsconf" target="_blank" rel="noopener">Facebook</a></li>
+        <li><a href="mailto:info@nips2025.org">Email Updates</a></li>
+      </ul>
+    </div>
+    <div class="footer-column">
+      <h4>Legal & Policies</h4>
+      <ul>
+        <li><a href="#">Privacy Policy</a></li>
+        <li><a href="#">Terms of Use</a></li>
+        <li><a href="#">Code of Conduct</a></li>
+        <li><a href="#">Accessibility</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>&copy; 2025 Neural Information Processing Systems Foundation. All rights reserved.</p>
+  </div>
+</footer>
+</body>
+</html>

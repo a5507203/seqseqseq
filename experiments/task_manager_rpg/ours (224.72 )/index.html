@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Todo RPG Quest</title>
+  <style>
+    /* Placeholder for layout and styling */
+    body { font-family: Arial, sans-serif; margin: 0; padding: 0; background: #f4f4f4; }
+    #stats, #todo-section, #map-section { padding: 20px; }
+    #stats { background: #333; color: #fff; }
+    #todo-section, #map-section { background: #fff; margin: 10px; border-radius: 4px; }
+    .modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+             background: rgba(0,0,0,0.6); display: flex; align-items: center;
+             justify-content: center; }
+    .modal.hidden { display: none; }
+    .modal-content { background: #fff; padding: 20px; border-radius: 4px; min-width: 300px; }
+    button { cursor: pointer; }
+  </style>
+</head>
+<body>
+  <div id="stats">
+    <h2>Player Stats</h2>
+    <p id="hp">HP: 100</p>
+    <p id="xp">XP: 0</p>
+    <p id="gold">Gold: 0</p>
+  </div>
+
+  <div id="todo-section">
+    <h2>Quests</h2>
+    <form id="todo-form">
+      <input type="text" id="todo-input" placeholder="Add a new quest" required />
+      <button type="submit">Add Quest</button>
+    </form>
+    <ul id="todo-list"></ul>
+  </div>
+
+  <div id="map-section">
+    <h2>Quest Map</h2>
+    <div id="map">
+      <!-- Quest markers will appear here -->
+    </div>
+  </div>
+
+  <!-- Battle Modal -->
+  <div id="battle-modal" class="modal hidden">
+    <div class="modal-content">
+      <h3>Battle!</h3>
+      <div id="battle-log"></div>
+      <button id="battle-close">Close</button>
+    </div>
+  </div>
+
+  <!-- Shop Modal -->
+  <div id="shop-modal" class="modal hidden">
+    <div class="modal-content">
+      <h3>Shop</h3>
+      <p>Potions cost 10 Gold each.</p>
+      <button id="buy-potion">Buy Potion</button>
+      <button id="shop-close">Close Shop</button>
+    </div>
+  </div>
+
+  <button id="open-shop">Open Shop</button>
+
+  <script src="app.js"></script>
+</body>
+
+<style>
+  /* Base Layout */
+  body { font-family: Arial, sans-serif; margin: 0; padding: 0; background: #f4f4f4; }
+  #stats, #todo-section, #map-section { padding: 20px; }
+  #stats { background: #333; color: #fff; }
+  #todo-section, #map-section { background: #fff; margin: 10px; border-radius: 4px; }
+
+  /* Map Styling */
+  #map { position: relative; height: 300px; background: #e0e0e0; border: 1px solid #ccc; border-radius: 4px; overflow: hidden; }
+
+  /* Quest Marker Styling */
+  .quest-marker {
+    position: absolute;
+    width: 24px;
+    height: 24px;
+    background: #ff6347;
+    border-radius: 50%;
+    border: 2px solid #fff;
+    box-shadow: 0 0 5px rgba(0,0,0,0.3);
+    cursor: pointer;
+    transition: transform 0.2s;
+  }
+  .quest-marker:hover { transform: scale(1.3); }
+
+  /* Todo List Styling */
+  #todo-list li { display: flex; align-items: center; margin: 6px 0; }
+  #todo-list li span { margin-left: 8px; }
+
+  /* Battle Log Styling */
+  #battle-log { max-height: 200px; overflow-y: auto; margin-bottom: 10px; }
+  #battle-log p { margin: 5px 0; font-size: 14px; }
+
+  /* Buttons */
+  button {
+    padding: 6px 12px;
+    border: none;
+    background: #007bff;
+    color: #fff;
+    border-radius: 4px;
+    transition: background 0.2s;
+  }
+  button:hover { background: #0056b3; }
+  button:disabled { opacity: 0.6; cursor: not-allowed; }
+
+  /* Shop Button */
+  #open-shop {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    padding: 10px 15px;
+    background: #28a745;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+  }
+</style>
+
+</html>

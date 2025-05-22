@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Electrical Circuit Puzzle</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- Info Panel -->
+
+
+
+  <div id="game-container">
+    <!-- Info Panel -->
+    <div id="info-panel">
+  <div>Level: <span id="level-display">1</span></div>
+  <div>Time: <span id="timer">0s</span></div>
+  <div>Score: <span id="score">0</span></div>
+  <button id="submit-btn">Check Circuit</button>
+  <button id="reset-btn">Reset Level</button>
+  <button id="toggle-hints-btn">Hide Hints</button>
+    </div>
+
+    <!-- Palette of Components -->
+    <div id="palette">
+      <div class="component" draggable="true" data-type="resistor">Resistor</div>
+      <div class="component" draggable="true" data-type="capacitor">Capacitor</div>
+      <div class="component" draggable="true" data-type="switch">Switch</div>
+    </div>
+
+    <!-- Dynamic Grid Container -->
+    <div id="grid-container"></div>
+  </div>
+
+  <script src="main.js"></script>
+
+<div id="instructions-overlay">
+  <div class="content">
+    <h2>How to Play</h2>
+    <p>Drag resistors, capacitors, and switches from the palette onto the grid to match the hidden target circuit.</p>
+    <ul>
+      <li>Left-click and drag to place components.</li>
+      <li>Right-click on a placed component to remove it.</li>
+      <li>Use the "Hide/Show Hints" button to toggle faint guides.</li>
+      <li>Click "Check Circuit" when you think it’s complete.</li>
+    </ul>
+    <button id="start-btn">Start Game</button>
+  </div>
+</div>
+
+<div id="endgame-overlay">
+  <div class="content">
+    <div>Congratulations! You completed all puzzles.</div>
+    <div>Your final score is: <span id="final-score"></span></div>
+    <button id="restart-btn">Play Again</button>
+  </div>
+</div>
+</body>
+</html>
