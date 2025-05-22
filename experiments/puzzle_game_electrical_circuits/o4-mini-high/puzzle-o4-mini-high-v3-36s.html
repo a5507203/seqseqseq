@@ -1,0 +1,40 @@
+<!-- index.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Circuit Builder Puzzle</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div id="game-container">
+    <header>
+      <h1>Circuit Builder</h1>
+      <div id="info">
+        <span id="level">Level: 1</span>
+        <span id="timer">Time: 0s</span>
+        <span id="score">Score: 0</span>
+      </div>
+    </header>
+    <section id="target-area">
+      <h2>Target Circuit</h2>
+      <pre id="target-display"></pre>
+    </section>
+    <section id="board">
+      <!-- grid cells injected here -->
+    </section>
+    <aside id="palette">
+      <h2>Components</h2>
+      <div class="component" draggable="true" data-type="resistor">Resistor</div>
+      <div class="component" draggable="true" data-type="capacitor">Capacitor</div>
+      <div class="component" draggable="true" data-type="switch">Switch</div>
+    </aside>
+    <footer>
+      <button id="check-btn">Check</button>
+      <button id="reset-btn">Reset</button>
+    </footer>
+  </div>
+  <script src="script.js" defer></script>
+</body>
+</html>

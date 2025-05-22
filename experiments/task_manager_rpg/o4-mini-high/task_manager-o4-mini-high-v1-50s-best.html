@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ToDo RPG Quest</title>
+    <style>
+        body { margin: 0; font-family: sans-serif; display: flex; height: 100vh; }
+        #sidebar { width: 250px; background: #f4f4f4; padding: 10px; box-sizing: border-box; overflow-y: auto; }
+        #map { flex: 1; position: relative; background: #cce5ff; }
+        .quest { position: absolute; background: #ffcc00; border-radius: 50%; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; cursor: pointer; }
+        header { background: #333; color: #fff; padding: 10px; text-align: center; }
+        #stats span { margin: 0 10px; }
+        .task-item { display: flex; justify-content: space-between; margin: 5px 0; }
+        .task-item button { margin-left: 5px; }
+        /* Modal styles */
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); align-items: center; justify-content: center; }
+        .modal-content { background: #fff; padding: 20px; border-radius: 5px; max-width: 300px; text-align: center; }
+        .modal-content button { margin: 10px; }
+    </style>
+</head>
+<body>
+    <div id="sidebar">
+        <header>
+            <h3>Player Stats</h3>
+            <div id="stats">
+                <span>HP: <span id="hp">100</span></span>
+                <span>XP: <span id="xp">0</span></span>
+                <span>Gold: <span id="gold">0</span></span>
+            </div>
+        </header>
+        <section>
+            <h4>To-Do Quests</h4>
+            <input type="text" id="newTask" placeholder="New task..." style="width: 100%; box-sizing: border-box;" />
+            <button id="addTask" style="width: 100%; margin:5px 0;">Add Quest</button>
+            <div id="taskList"></div>
+        </section>
+        <button id="openShop" style="width: 100%; margin-top: 10px;">Shop</button>
+    </div>
+    <div id="map"></div>
+
+    <!-- Battle Modal -->
+    <div id="battleModal" class="modal">
+        <div class="modal-content">
+            <h4>Battle!</h4>
+            <p id="monsterInfo"></p>
+            <button id="fightBtn">Fight</button>
+            <button id="runBtn">Run</button>
+        </div>
+    </div>
+    <!-- Shop Modal -->
+    <div id="shopModal" class="modal">
+        <div class="modal-content">
+            <h4>Shop</h4>
+            <p>Potion (Restore 20 HP) - 10 Gold</p>
+            <button id="buyPotion">Buy Potion</button>
+            <button id="closeShop">Close</button>
+        </div>
+    </div>
+
+    <script>
+        let player = { hp: 100, xp: 0, gold: 0 };
+        let tasks = [];
+        let currentTaskId = null;
+
+        const hpEl = document.getElementById('hp');
+        const xpEl = document.getElementById('xp');
+        const goldEl = document.getElementById('gold');
+        const taskListEl = document.getElementById('taskList');
+        const mapEl = document.getElementById('map');
+        const battleModal = document.getElementById('battleModal');
+        const monsterInfo = document.getElementById('monsterInfo');
+        const fightBtn = document.getElementById('fightBtn');
+        const runBtn = document.getElementById('runBtn');
+        const shopModal = document.getElementById('shopModal');
+
+        function updateStats() {
+            hpEl.textContent = player.hp;
+            xpEl.textContent = player.xp;
+            goldEl.textContent = player.gold;
+        }
+
+        function renderTasks() {
+            taskListEl.innerHTML = '';
+            mapEl.innerHTML = '';
+            tasks.forEach(task => {
+                // List
+                const div = document.createElement('div');
+                div.className = 'task-item';
+                div.innerHTML = `<span>${task.text}</span>`;
+                const btn = document.createElement('button');
+                btn.textContent = 'Complete';
+                btn.onclick = () => startBattle(task.id);
+                div.appendChild(btn);
+                taskListEl.appendChild(div);
+                // Map
+                const quest = document.createElement('div');
+                quest.className = 'quest';
+                quest.textContent = '!';
+                quest.style.left = task.x + 'px';
+                quest.style.top = task.y + 'px';
+                quest.title = task.text;
+                quest.onclick = () => startBattle(task.id);
+                mapEl.appendChild(quest);
+            });
+        }
+
+        function addTask(text) {
+            const id = Date.now();
+            const x = Math.random() * (mapEl.clientWidth - 40);
+            const y = Math.random() * (mapEl.clientHeight - 40);
+            tasks.push({ id, text, x, y });
+            renderTasks();
+        }
+
+        document.getElementById('addTask').addEventListener('click', () => {
+            const t = document.getElementById('newTask').value.trim();
+            if (!t) return;
+            addTask(t);
+            document.getElementById('newTask').value = '';
+        });
+
+        function startBattle(taskId) {
+            currentTaskId = taskId;
+            const monsterHp = Math.floor(Math.random() * 50) + 50;
+            monsterInfo.textContent = `Monster HP: ${monsterHp}`;
+            battleModal.style.display = 'flex';
+        }
+
+        fightBtn.onclick = () => {
+            battleModal.style.display = 'none';
+            const win = Math.random() < 0.7;
+            if (win) {
+                const xpGain = Math.floor(Math.random() * 20) + 10;
+                const goldGain = Math.floor(Math.random() * 20) + 10;
+                player.xp += xpGain;
+                player.gold += goldGain;
+                alert(`Victory! +${xpGain} XP, +${goldGain} Gold.`);
+            } else {
+                const dmg = Math.floor(Math.random() * 20) + 5;
+                player.hp = Math.max(0, player.hp - dmg);
+                alert(`Defeat! -${dmg} HP.`);
+            }
+            // Remove task
+            tasks = tasks.filter(t => t.id !== currentTaskId);
+            currentTaskId = null;
+            updateStats();
+            renderTasks();
+        };
+        runBtn.onclick = () => {
+            battleModal.style.display = 'none';
+            alert('You fled!');
+        };
+
+        // Shop
+        document.getElementById('openShop').onclick = () => shopModal.style.display = 'flex';
+        document.getElementById('closeShop').onclick = () => shopModal.style.display = 'none';
+        document.getElementById('buyPotion').onclick = () => {
+            if (player.gold >= 10) {
+                player.gold -= 10;
+                player.hp = Math.min(100, player.hp + 20);
+                updateStats();
+                alert('Potion used! +20 HP.');
+            } else {
+                alert('Not enough gold!');
+            }
+        };
+
+        // Close modals on outside click
+        window.onclick = e => {
+            if (e.target === battleModal) battleModal.style.display = 'none';
+            if (e.target === shopModal) shopModal.style.display = 'none';
+        };
+        updateStats();
+        renderTasks();
+    </script>
+</body>
+</html>
