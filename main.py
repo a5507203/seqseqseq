@@ -68,7 +68,7 @@ async def main():
     # Create TaskExecuter with desired parameters
     executor = TaskExecuter(
         agents=agents,
-        current_task=snake_chess,
+        current_task=travel_plan,
         max_rounds=30,
         max_recursion_depth=10
     )

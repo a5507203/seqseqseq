@@ -1,0 +1,336 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Circuit Puzzle Game</title>
+  <style>
+    :root {
+      --header-bg: #f0f0f0;
+      --palette-bg: #fafafa;
+      --main-bg: #ffffff;
+      --cell-bg: #fff;
+      --cell-border: #ddd;
+      --grid-bg: #ccc;
+      --resistor-bg-start: #ffcccc;
+      --resistor-bg-end: #ffe6e6;
+      --capacitor-bg-start: #ccffcc;
+      --capacitor-bg-end: #e6ffe6;
+      --switch-bg-start: #cce5ff;
+      --switch-bg-end: #e6f0ff;
+      --resistor-border: #d9534f;
+      --capacitor-border: #5cb85c;
+      --switch-border: #0275d8;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { height: 100%; font-family: Arial, sans-serif; }
+    #app {
+      display: grid;
+      grid-template-rows: 60px 1fr;
+      grid-template-columns: 250px 1fr;
+      grid-template-areas: "header header" "palette main";
+      height: 100%;
+    }
+    header {
+      grid-area: header;
+      background: var(--header-bg);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 20px;
+      border-bottom: 1px solid #bbb;
+      box-shadow: inset 0 -2px 5px rgba(0,0,0,0.05);
+    }
+    #level, #score, #timer {
+      font-size: 18px;
+      color: #333;
+    }
+    header button {
+      margin: 0 5px;
+      padding: 5px 10px;
+      font-size: 16px;
+    }
+    .palette {
+      grid-area: palette;
+      background: var(--palette-bg);
+      border-right: 1px solid #bbb;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .palette h2 {
+      font-size: 16px;
+      margin-bottom: 15px;
+      color: #555;
+    }
+    .palette-item {
+      width: 60px;
+      height: 40px;
+      background: #fff;
+      border: 1px solid #aaa;
+      border-radius: 4px;
+      margin-bottom: 15px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #333;
+      font-weight: bold;
+      cursor: move;
+      user-select: none;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+      transition: transform 0.1s ease, box-shadow 0.1s ease;
+    }
+    .palette-item:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 6px rgba(0,0,0,0.15);
+    }
+    .main {
+      grid-area: main;
+      padding: 20px;
+      background: var(--main-bg);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow: auto;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(10, 40px);
+      grid-template-rows: repeat(10, 40px);
+      gap: 2px;
+      background: var(--grid-bg);
+      padding: 4px;
+      border-radius: 6px;
+      max-width: 100%;
+      overflow: auto;
+    }
+    .cell {
+      width: 40px;
+      height: 40px;
+      background: var(--cell-bg);
+      border: 1px solid var(--cell-border);
+      position: relative;
+      transition: background 0.2s ease;
+    }
+    .cell:hover {
+      background: #f9f9f9;
+    }
+    .cell.highlight {
+      background: #d0f0ff;
+    }
+    .component {
+      width: 100%;
+      height: 100%;
+      border: 1px solid #999;
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      color: #333;
+      cursor: move;
+      user-select: none;
+      position: absolute;
+      top: 0; left: 0;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+      transition: transform 0.2s ease, opacity 0.2s ease;
+    }
+    .component:hover {
+      transform: scale(1.05);
+    }
+    .component[data-type="R"] {
+      background: linear-gradient(135deg, var(--resistor-bg-start), var(--resistor-bg-end));
+      border-color: var(--resistor-border);
+    }
+    .component[data-type="C"] {
+      background: linear-gradient(135deg, var(--capacitor-bg-start), var(--capacitor-bg-end));
+      border-color: var(--capacitor-border);
+    }
+    .component[data-type="S"] {
+      background: linear-gradient(135deg, var(--switch-bg-start), var(--switch-bg-end));
+      border-color: var(--switch-border);
+    }
+    .component.off {
+      opacity: 0.4;
+    }
+    @media (max-width: 768px) {
+      #app {
+        grid-template-columns: 1fr;
+        grid-template-rows: 60px auto 1fr;
+        grid-template-areas: "header" "palette" "main";
+      }
+      .palette {
+        flex-direction: row;
+        justify-content: start;
+        align-items: center;
+        overflow-x: auto;
+        border-right: none;
+        border-bottom: 1px solid #bbb;
+      }
+      .palette-item {
+        margin: 0 10px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="app">
+    <header>
+      <div id="level">Level: 1/20</div>
+      <div>
+        <button id="check-btn">Check</button>
+        <button id="next-btn" disabled>Next</button>
+      </div>
+      <div id="score">Score: 0</div>
+      <div id="timer">Time: 00:00</div>
+    </header>
+    <aside class="palette">
+      <h2>Components</h2>
+      <div class="palette-item" draggable="true">R</div>
+      <div class="palette-item" draggable="true">C</div>
+      <div class="palette-item" draggable="true">S</div>
+    </aside>
+    <section class="main">
+      <div class="grid" id="grid"></div>
+    </section>
+  </div>
+  <script>
+    // Game design data
+    window.gameDesign = {
+      scoring: {
+        basePoints: 100,
+        timePenaltyPer5Sec: 5,
+        fastBonusPct: 0.2,
+        minScorePctOnTimeout: 0.1,
+        hintPenalty: 10
+      },
+      levels: Array.from({length:20}, (_,i) => {
+        const n = i+2;
+        const comps = [];
+        for(let j=0;j<n;j++) comps.push(j%3===2?'C':j%3===1?'S':'R');
+        return { id: i+1, difficulty: n, components: comps, baseTime: n*30 };
+      })
+    };
+
+    // Build grid cells
+    const gridEl = document.getElementById('grid');
+    function clearGrid(){
+      gridEl.innerHTML = '';
+      for(let i=0;i<100;i++){
+        const cell = document.createElement('div');
+        cell.className = 'cell';
+        cell.dataset.index = i;
+        cell.addEventListener('dragover', e=>{ e.preventDefault(); cell.classList.add('highlight'); });
+        cell.addEventListener('dragleave', ()=>cell.classList.remove('highlight'));
+        cell.addEventListener('drop', e=>{
+          e.preventDefault(); cell.classList.remove('highlight');
+          if(cell.querySelector('.component')) return;
+          const data = e.dataTransfer.getData('component');
+          if(!data) return;
+          const { type, orientation, state } = JSON.parse(data);
+          const comp = document.createElement('div');
+          comp.className = 'component';
+          comp.textContent = type;
+          comp.draggable = true;
+          comp.dataset.type = type;
+          comp.dataset.orientation = orientation;
+          comp.dataset.state = state;
+          comp.dataset.gridIndex = i;
+          comp.style.transform = `rotate(${orientation}deg)`;
+          if(state==='off') comp.classList.add('off');
+          comp.addEventListener('dragstart', ev=>{
+            ev.dataTransfer.setData('component', JSON.stringify({
+              type, orientation: comp.dataset.orientation, state: comp.dataset.state
+            }));
+            setTimeout(()=> cell.removeChild(comp),0);
+          });
+          comp.addEventListener('dblclick', ()=>{
+            let o = parseInt(comp.dataset.orientation,10);
+            o = (o + 90) % 360;
+            comp.dataset.orientation = o;
+            comp.style.transform = `rotate(${o}deg)`;
+          });
+          comp.addEventListener('click', e=>{
+            if(comp.dataset.type==='S'){
+              comp.dataset.state = comp.dataset.state==='on'?'off':'on';
+              comp.classList.toggle('off');
+            }
+          });
+          cell.appendChild(comp);
+        });
+        gridEl.appendChild(cell);
+      }
+    }
+
+    document.querySelectorAll('.palette-item').forEach(item=>{
+      item.addEventListener('dragstart', e=>{
+        const type = item.textContent;
+        e.dataTransfer.setData('component', JSON.stringify({ type, orientation: 0, state: 'on' }));
+      });
+    });
+
+    let timerInterval, elapsed=0;
+    function startTimer(){
+      clearInterval(timerInterval); elapsed=0;
+      document.getElementById('timer').textContent = 'Time: 00:00';
+      timerInterval = setInterval(()=>{
+        elapsed++;
+        const m = String(Math.floor(elapsed/60)).padStart(2,'0');
+        const s = String(elapsed%60).padStart(2,'0');
+        document.getElementById('timer').textContent = `Time: ${m}:${s}`;
+      },1000);
+    }
+
+    let currentLevel=1, attempts=0, hintsUsed=0, totalScore=0, levelStart;
+    const levelEl = document.getElementById('level'),
+          scoreEl = document.getElementById('score'),
+          checkBtn = document.getElementById('check-btn'),
+          nextBtn = document.getElementById('next-btn');
+
+    function loadLevel(){
+      const lvl = window.gameDesign.levels[currentLevel-1];
+      levelEl.textContent = `Level: ${currentLevel}/20`;
+      clearGrid();
+      startTimer();
+      attempts=0; hintsUsed=0;
+      checkBtn.disabled=false; nextBtn.disabled=true;
+      levelStart = Date.now();
+    }
+
+    checkBtn.addEventListener('click', ()=>{
+      attempts++;
+      const placed = Array.from(document.querySelectorAll('.component')).map(el=>({
+        type: el.dataset.type,
+        gridIndex: parseInt(el.dataset.gridIndex,10),
+        orientation: el.dataset.orientation,
+        state: el.dataset.state
+      }));
+      const lvl = window.gameDesign.levels[currentLevel-1];
+      const success = window.gameLogic.validateCircuit(placed,lvl);
+      const sc = window.gameLogic.calculateScore(levelStart,Date.now(),lvl,attempts,hintsUsed,success);
+      if(success){
+        totalScore += sc;
+        scoreEl.textContent = `Score: ${totalScore}`;
+        checkBtn.disabled = true;
+        nextBtn.disabled = false;
+      } else {
+        alert('Incorrect circuit, try again.');
+      }
+    });
+
+    nextBtn.addEventListener('click', ()=>{
+      if(currentLevel<20){
+        currentLevel++;
+        loadLevel();
+      } else {
+        alert('You completed all levels! Final score: '+totalScore);
+      }
+    });
+
+    clearGrid();
+    loadLevel();
+  </script>
+</body>
+</html>
+```

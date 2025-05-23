@@ -1,0 +1,44 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+    <title>Todo RPG</title>
+    <link rel="stylesheet" href="css/styles.css"/>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
+</head>
+<body>
+    <header>
+        <h1>Todo RPG</h1>
+        <nav>
+            <button id="nav-tasks">Quests</button>
+            <button id="nav-map">Map</button>
+            <button id="nav-battle">Battle</button>
+            <button id="nav-shop">Shop</button>
+            <button id="nav-status">Status</button>
+        </nav>
+    </header>
+    <main>
+        <section id="view-tasks" class="view"></section>
+        <section id="view-map" class="view hidden"></section>
+        <section id="view-battle" class="view hidden"></section>
+        <section id="view-shop" class="view hidden"></section>
+        <section id="view-status" class="view hidden"></section>
+    </main>
+
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <script src="js/stateManager.js"></script>
+    <script src="js/persistence.js"></script>
+    <script src="js/taskManager.js"></script>
+    <script src="js/battleEngine.js"></script>
+    <script src="js/battleResultHandler.js"></script>
+    <script src="js/shopManager.js"></script>
+    <script src="js/mapRenderer.js"></script>
+    <script src="js/ui/taskListView.js"></script>
+    <script src="js/ui/mapView.js"></script>
+    <script src="js/ui/battleView.js"></script>
+    <script src="js/ui/shopView.js"></script>
+    <script src="js/ui/statusView.js"></script>
+</body>
+</html>
