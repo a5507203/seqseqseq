@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+    <title>Circuit Builder Game</title>
+</head>
+<body>
+    <header>
+        <h1>Circuit Builder Puzzle Game</h1>
+        <div id="score">Score: <span id="scoreValue">0</span></div>
+        <button id="resetButton">Reset</button>
+    </header>
+    <main>
+        <div id="targetCircuit"></div>
+        <div id="circuitGrid"></div>
+    </main>
+    <footer>
+        <p>&copy; 2023 Circuit Builder Game</p>
+    </footer>
+    <script src="script.js"></script>
+</body>
+</html>
+
+<style>
+    * {
+        box-sizing: border-box;
+    }
+    body {
+        font-family: Arial, sans-serif;
+    }
+    header {
+        text-align: center;
+        margin: 20px;
+    }
+    #circuitGrid {
+        display: grid;
+        grid-template-columns: repeat(5, 100px);
+        grid-template-rows: repeat(5, 100px);
+        gap: 5px;
+        border: 2px solid #444;
+        padding: 10px;
+    }
+    .component {
+        width: 90px;
+        height: 90px;
+        border: 1px dashed #666;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: #f9f9f9;
+        cursor: grab;
+    }
+    .component.dragging {
+        opacity: 0.5;
+        cursor: grabbing;
+    }
+</style>
+
+<script>
+    const components = [
+        { type: 'Resistor', id: 'resistor', color: 'Red' },
+        { type: 'Capacitor', id: 'capacitor', color: 'Blue' },
+        { type: 'Switch', id: 'switch', color: 'Green' },
+    ];
+
+    const circuitGrid = document.getElementById('circuitGrid');
+    const scoreValue = document.getElementById('scoreValue');
+
+    function createComponents() {
+        const componentArea = document.createElement('div');
+        componentArea.id = 'componentArea';
+        
+        components.forEach(comp => {
+            const component = document.createElement('div');
+            component.className = 'component';
+            component.draggable = true;
+            component.id = comp.id;
+            component.innerText = comp.type;
+            component.style.backgroundColor = comp.color;
+
+            component.addEventListener('dragstart', dragStart);
+            component.addEventListener('dragend', dragEnd);
+
+            componentArea.appendChild(component);
+        });
+
+        document.body.insertBefore(componentArea, circuitGrid);
+    }
+
+    function dragStart(event) {
+        event.dataTransfer.setData('text/plain', event.target.id);
+        event.target.classList.add('dragging');
+    }
+
+    function dragEnd(event) {
+        event.target.classList.remove('dragging');
+    }
+
+    function drop(event) {
+        event.preventDefault();
+        const componentId = event.dataTransfer.getData('text/plain');
+        const component = document.getElementById(componentId);
+        event.target.appendChild(component);
+    }
+
+    function allowDrop(event) {
+        event.preventDefault();
+    }
+
+    function initializeGrid() {
+        for (let i = 0; i < 25; i++) {
+            const cell = document.createElement('div');
+            cell.classList.add('grid-cell');
+            cell.addEventListener('dragover', allowDrop);
+            cell.addEventListener('drop', drop);
+            circuitGrid.appendChild(cell);
+        }
+    }
+
+    createComponents();
+    initializeGrid();
+</script>

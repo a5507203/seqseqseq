@@ -1,0 +1,110 @@
+\documentclass{beamer}
+\usepackage{amsmath}
+\usepackage{graphicx}
+
+\title{Maximum Likelihood Estimation}
+\subtitle{A Comprehensive Guide for Research Students}
+\author{Lecturer's Name}
+\date{\today}
+
+\begin{document}
+
+\frame{\titlepage}
+
+\begin{frame}
+\frametitle{Table of Contents}
+\tableofcontents
+\end{frame}
+
+\section{Introduction to MLE}
+\begin{frame}
+\frametitle{Motivation for MLE}
+\begin{itemize}
+    \item Understanding parameter estimation
+    \item Importance in regression and classification tasks
+\end{itemize}
+\end{frame}
+
+\section{Statistical Foundations}
+\begin{frame}
+\frametitle{Statistical Inference}
+\begin{itemize}
+    \item Point Estimation
+    \item Interval Estimation
+\end{itemize}
+\end{frame}
+
+\section{What is Maximum Likelihood Estimation?}
+\begin{frame}
+\frametitle{Definition of Likelihood Function}
+\begin{equation}
+\mathcal{L}(\theta; x) = P(X = x | \theta)
+\end{equation}
+\end{frame}
+
+\section{Intuition Behind MLE}
+\begin{frame}
+\frametitle{Visual Explanation of MLE}
+\begin{center}
+    \includegraphics[width=0.5\linewidth]{example_graph.png} % Placeholder for a relevant graphic
+\end{center}
+\end{frame}
+
+\section{Mathematical Foundation}
+\begin{frame}
+\frametitle{Deriving the Maximum Likelihood Estimator}
+\begin{equation}
+\hat{\theta}_{MLE} = \arg \max_{\theta} \mathcal{L}(\theta; x)
+\end{equation}
+\end{frame}
+
+\section{Generalized MLE}
+\begin{frame}
+\frametitle{MLE for Various Distributions}
+\begin{itemize}
+    \item Normal Distribution
+    \item Poisson Distribution
+\end{itemize}
+\end{frame}
+
+\section{Properties of MLE}
+\begin{frame}
+\frametitle{Consistency}
+Definition: An estimator is consistent if it converges in probability to the true value as sample size increases.
+\end{frame}
+
+\section{Computational Approaches}
+\begin{frame}
+\frametitle{Numerical Approaches}
+\begin{itemize}
+    \item Gradient Descent
+    \item Newton-Raphson
+\end{itemize}
+\end{frame}
+
+\section{Applications of MLE}
+\begin{frame}
+\frametitle{Real-world Examples}
+\begin{itemize}
+    \item Case Study 1
+    \item Case Study 2
+\end{itemize}
+\end{frame}
+
+\section{Conclusion}
+\begin{frame}
+\frametitle{Summary of Key Points}
+\begin{itemize}
+    \item Importance of MLE in ML
+    \item Future Directions in MLE Research
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{References}
+\begin{itemize}
+    \item List of Recommended Readings and Resources
+\end{itemize}
+\end{frame}
+
+\end{document}

@@ -1,0 +1,29 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    color: #333;
+}
+
+#app {
+    max-width: 600px;
+    margin: auto;
+    padding: 20px;
+    background: white;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+#task-input {
+    margin-bottom: 20px;
+}
+
+#quests {
+    margin-top: 10px;
+}
+
+.quest {
+    padding: 10px;
+    background-color: #e7f3fe;
+    border: 1px solid #a8d4f8;
+    margin-bottom: 10px;
+}
