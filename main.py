@@ -68,7 +68,7 @@ async def main():
     # Create TaskExecuter with desired parameters
     executor = TaskExecuter(
         agents=agents,
-        current_task=travel_plan,
+        current_task=quiz_platform_metroidvania,
         max_rounds=30,
         max_recursion_depth=10
     )
