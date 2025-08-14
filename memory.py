@@ -23,17 +23,20 @@ class Memory:
         self.clean_short()
         self.short_term["task"] = task_description
 
-
-    def add_segment(self, segment: str):
-        """Add a new response segment to the current task."""
-        self.short_term["segments"].append(segment)
-
     def add_short(self, segment: str, justify:str):
         """Add a new response segment to the current task."""
    
         self.short_term["segments"].append(segment)
         self.short_term["justify"]=[]
         self.short_term["justify"].append(justify)
+        # Clear validation feedback since we have new content that hasn't been validated yet
+        self.short_term["validation_feedback"] = []
+    
+    def add_validation_justification(self, justify: str):
+        """Add validation justification that can guide future execution."""
+        if "validation_feedback" not in self.short_term:
+            self.short_term["validation_feedback"] = []
+        self.short_term["validation_feedback"].append(justify)
 
     def archive_task(self, result: Any = None):
         """
@@ -50,52 +53,19 @@ class Memory:
         # clear short-term memory
         self.clean_short()
 
-    def record_long(self, entry: Dict[str, Any]):
-        """
-        Directly record an arbitrary entry into long-term memory.
-        """
-        self.long_term.append(entry)
-        if self.capacity is not None and len(self.long_term) > self.capacity:
-            self.long_term.pop(0)
-
-    def query_long(self, **kwargs) -> List[Dict[str, Any]]:
-        """
-        Query long-term memory entries by matching key-value pairs.
-        """
-        def match(e: Dict[str, Any]) -> bool:
-            for k, v in kwargs.items():
-                if e.get(k) != v:
-                    return False
-            return True
-        return [e for e in self.long_term if match(e)]
-
-    def get_short(self) -> Dict[str, Any]:
-        """Return a copy of the current short-term memory."""
-        return self.short_term.copy()
-
-
-    def get_short_str(self) -> Dict[str, Any]:
-        """Return a copy of the current short-term memory."""
-        return  "### all previous justifications:" + self.get_short_justify_str   +  "### previous results"+   self.get_short_segment_str + "\n"
-
-
     def get_short_justify_str(self) -> str:
-        """Return the raw concatenation of all segments in short-term memory."""
-        return "".join(self.short_term.get("justify", []))
+        """Return the raw concatenation of all justifications in short-term memory."""
+        justifications = self.short_term.get("justify", [])
+        return "\n".join(justifications)
+    
+    def get_validation_feedback_str(self) -> str:
+        """Return validation feedback as a separate string."""
+        validation_feedback = self.short_term.get("validation_feedback", [])
+        return "\n".join(validation_feedback)
     
     def get_short_segment_str(self) -> str:
         """Return the raw concatenation of all segments in short-term memory."""
         return "\n".join(self.short_term.get("segments", []))
-
-    def get_lastest_segment_str(self) -> str:
-        """Return the raw concatenation of all segments in short-term memory."""
-        return self.short_term["segments"][-1]
-
-
-    
-    def get_long(self) -> List[Dict[str, Any]]:
-        """Return all entries from long-term memory."""
-        return list(self.long_term)
 
     def get_long_str(self) -> str:
         """
@@ -112,27 +82,14 @@ class Memory:
         # Join each result entry, converting to string in case it's not already
         return self.get_long_str()+"\n"+self.get_short_segment_str()
 
-
-    def get_all_with_justify(self) -> str:
-
-        """
-        Concatenate and return all 'result' strings from  memory.
-        """
-        # Join each result entry, converting to string in case it's not already
-        return self.get_long_str()+self.get_short_segment_str()
-    
-
-    def clean_all(self) -> None:
-        """Clear all response segments in short-term memory, keeping the task description."""
-        self.clean_short()
-        self.long_term: List[Dict[str, Any]] = []
-
     def replace_all(self, seg,justify):
         self.long_term: List[Dict[str, Any]] = []
         self.short_term["segments"] = [seg]
         self.short_term["justify"] = [justify]
+        # Clear validation feedback since we have completely new content
+        self.short_term["validation_feedback"] = []
 
     def clean_short(self) -> None:
         """Clear all response segments in short-term memory, keeping the task description."""
-        self.short_term =  {"task": "", "segments": [],"justify":[]}
+        self.short_term =  {"task": "", "segments": [],"justify":[], "validation_feedback": []}
 

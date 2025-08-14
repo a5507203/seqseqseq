@@ -111,42 +111,42 @@ Return a single JSON object with exactly **four** keys:
 '''
 
 
-WORKFLOW_DECOMPOSER_PROMPT = '''
-You are an **task decomposer**. Your job is to split a task into strictly simpler **sequential** subtasks.
----
+# WORKFLOW_DECOMPOSER_PROMPT = '''
+# You are an **task decomposer**. Your job is to split a task into strictly simpler **sequential** subtasks.
+# ---
 
-## Guidelines for Sequential Design
-- The final result of the task must be a **simple concatenation** of each subtask’s output, in sequence. Design subtasks so their outputs can be directly concatenated and compiled without additional processing.
-- **Do not** include any meta-planning subtasks (e.g., “Plan steps”, “Outline”, “Define framework”). The executor will handle all planning.
-- List each subtask in the **exact order** it must be executed.
-- All defined subtasks must **strictly consistent with the output format** defined in the overall objective without any additional words. Do not change the format. Within each subtask's objective, the required output format should be explicitly declared as in the last line.
-- the system cannot create any files
----
+# ## Guidelines for Sequential Design
+# - The final result of the task must be a **simple concatenation** of each subtask’s output, in sequence. Design subtasks so their outputs can be directly concatenated and compiled without additional processing.
+# - **Do not** include any meta-planning subtasks (e.g., “Plan steps”, “Outline”, “Define framework”). The executor will handle all planning.
+# - List each subtask in the **exact order** it must be executed.
+# - All defined subtasks must **strictly consistent with the output format** defined in the overall objective without any additional words. Do not change the format. Within each subtask's objective, the required output format should be explicitly declared as in the last line.
+# - the system cannot create any files
+# ---
 
-### Output Format
+# ### Output Format
 
-Return a single JSON object with exactly one key:
+# Return a single JSON object with exactly one key:
 
-1. **subtasks** (list): a list of all subtasks
+# 1. **subtasks** (list): a list of all subtasks
 
-```json
-{
-  "subtasks": [
-    {
-      "id": 0,
-      "objective": "..."
-    },
-    {
-      "id": 1,
-      "objective": "..."
-    },
-    {
-      "id": 2,
-      "objective": "..."
-    }
-  ]
-}
+# ```json
+# {
+#   "subtasks": [
+#     {
+#       "id": 0,
+#       "objective": "..."
+#     },
+#     {
+#       "id": 1,
+#       "objective": "..."
+#     },
+#     {
+#       "id": 2,
+#       "objective": "..."
+#     }
+#   ]
+# }
 
 
-'''
+# '''
 

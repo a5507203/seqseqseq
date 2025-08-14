@@ -38,9 +38,12 @@ class Agent:
         self.status = "ongoing"
 
 
-    async def validate_async(self, overall: str, task: str, fragment: str) -> bool:
-
-        user_content = f"# overall objective:\n{overall}\n\n---\n\n# current task:\n{task}\n\n---\n\n# generated output fragment so far:\n{fragment}\n"
+    async def validate_async(self, task: str, fragment: str) -> Dict[str, Any]:
+        """
+        Validates a fragment and returns both result and justify information.
+        Returns: {"result": bool, "justify": str}
+        """
+        user_content = f"# task:\n{task}\n\n---\n\n# generated output fragment so far:\n{fragment}\n"
         logger.info(f"[DEBUG] validation input [Agent {self.id}]: {user_content}")
         prompt = [
             {"role": "system", "content": OBJECTIVE_VALIDATOR_PROMPT},
@@ -49,17 +52,33 @@ class Agent:
         try:
             data = json.loads(await self.llm.a_chat_completion(prompt))
             result = (data.get("result", "")).lower()
+            justify = data.get("justify", "")
             logger.info(f"[Agent {self.id}] Validation result: {data}")
             
-            return "true" in result
+            return {
+                "result": "true" in result,
+                "justify": justify
+            }
         except Exception as e:
             logger.info(f"[error][Agent {self.id}] Validation failed: {e}")
-            return False
+            return {"result": False, "justify": f"Validation error: {str(e)}"}
 
-    async def step_async(self, overall: str, task: str) -> Dict[str, Any]:
+    async def step_async(self, task: str) -> Dict[str, Any]:
         prior = self.memory.get_all()
         jf = self.memory.get_short_justify_str()
-        user_content = f"# overall objective:\n{overall}\n\n---\n\n# current task:\n{task}\n\n---\n\n# previously generated justifications: \n{jf}\n\n---\n\n# previous all generated segments:\n{prior}\n"
+        validation_feedback = self.memory.get_validation_feedback_str()
+        
+        # Construct user content with clear separation
+        user_content = f"# task:\n{task}\n\n---\n\n"
+        
+        if jf.strip():
+            user_content += f"# previously generated justifications:\n{jf}\n\n---\n\n"
+        
+        if validation_feedback.strip():
+            user_content += f"# validation feedback from other agents:\n{validation_feedback}\n\n---\n\n"
+        
+        user_content += f"# previous all generated segments:\n{prior}\n"
+        
         logger.info(f"[DEBUG] step input [Agent {self.id}]: {user_content}")
 
         prompt = [
@@ -76,7 +95,7 @@ class Agent:
             status = data.get("status", "").lower()
             mode = data.get("mode", "").lower()
 
-            logger.info(f"[DEBUG][Agent {self.id}] Generated content preview: \n\n---\n\n jf: {justify} \n\n---\n\n new content \n {new_content}\n Step status: {status} \n\n---\n\n mode: {mode}\n")
+            logger.info(f"[DEBUG][Agent {self.id}] Generated content preview: \n\n---\n\n justify: {justify} \n\n---\n\n new content \n {new_content}\n Step status: {status} \n\n---\n\n mode: {mode}\n")
 
             if "complete" in status:
                 self.status = "complete"
@@ -101,13 +120,13 @@ class Agent:
             raise RuntimeError(f"Agent {self.id} encountered an error: {e}")
 
 
-    async def vote_async(self, overall: str, task: str, versions: List[str]) -> List[int]:
+    async def vote_async(self, task: str, versions: List[str]) -> List[int]:
 
         versions_block = "\n\n".join(   
             f"## Version {i}\n{v} \n --- \n"
             for i, v in enumerate(versions)
         )
-        user_content = f"# Overall objective:\n{overall}\n\n---\n\n# current task:\n{task}\n\n---\n\n# Different versions of answers for current task: \n{versions_block}\n\n---\n\n"
+        user_content = f"# task:\n{task}\n\n---\n\n# Different versions of answers for task: \n{versions_block}\n\n---\n\n"
        
         logger.info(f"[DEBUG] vote input [Agent {self.id}]: {user_content}")
         prompt = [

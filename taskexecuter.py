@@ -19,15 +19,11 @@ class TaskExecuter:
         self,
         agents: Dict[int, Agent],
         current_task: str,
-        overall_task: Optional[str] = None,
         max_rounds: int = 5,
-        max_recursion_depth: int = 3,
     ):
         self.agents = agents
         self.current_task = current_task
-        self.overall_task = overall_task or current_task
         self.max_rounds = max_rounds
-        self.max_recursion_depth = max_recursion_depth
 
     async def step(self,rnd, active_agents):
         """
@@ -39,7 +35,7 @@ class TaskExecuter:
         logger.info(f"↻ Round {rnd+1}/{self.max_rounds}, active={[a.id for a in active_agents]}")
 
         step_tasks = [
-            agent.step_async(self.overall_task, self.current_task)
+            agent.step_async(self.current_task)
             for agent in active_agents
         ]
         step_results = await asyncio.gather(*step_tasks, return_exceptions=False)
@@ -49,19 +45,21 @@ class TaskExecuter:
 
     async def cros_model_val(self, active_agents):
         """
-        Phase 2: cross-model validation by majority vote.
+        Phase 2: cross-model validation by majority vote with justification extraction.
         All agents (excluding the producer) validate each new fragment concurrently.
         """
         # Map each producer agent to its validation task
         success_count = 0
         validation_map = []  # list of (agent, validation_task)
+        agent_validation_results = {}  # Store validation results for each agent
+        
         for agent in active_agents:
             segs = agent.memory.get_all()
             if not segs:
                 continue
             validators = [v for v in self.agents.values() if v.id != agent.id]
             task = asyncio.gather(
-                *(v.validate_async(self.overall_task, self.current_task, segs)
+                *(v.validate_async(self.current_task, segs)
                 for v in validators),
                 return_exceptions=True
             )
@@ -70,26 +68,65 @@ class TaskExecuter:
         # Run all validations in parallel
         results = await asyncio.gather(*(task for _, task in validation_map))
 
-        # Apply majority rule
+        # Apply majority rule and collect validation feedback
         total_validators = len(self.agents) - 1
         winner_mem = None
+        best_agent_score = -1
+        best_agent = None
+        
         for (agent, _), votes in zip(validation_map, results):
-            valid_votes = sum(1 for r in votes if isinstance(r, bool) and r)
-            if valid_votes <= total_validators / 2:
-                # Remove invalid fragment
-                agent.memory.clean_short()
+            # Extract validation results and justifications
+            valid_votes = 0
+            all_justifications = []
+            
+            for vote_result in votes:
+                if isinstance(vote_result, dict):
+                    if vote_result.get("result", False):
+                        valid_votes += 1
+                    all_justifications.append(vote_result.get("justify", ""))
+                elif isinstance(vote_result, bool) and vote_result:  # Backward compatibility
+                    valid_votes += 1
+            
+            agent_validation_results[agent.id] = {
+                "valid_votes": valid_votes,
+                "total_votes": total_validators,
+                "justifications": all_justifications
+            }
+            
+            # Track best agent for fallback scenario
+            if valid_votes > best_agent_score:
+                best_agent_score = valid_votes
+                best_agent = agent
+            
+            # Store validation feedback regardless of pass/fail status
+            feedback_items = [j for j in all_justifications if j.strip()]
+            if feedback_items:
+                # Add all validation feedback to help guide future iterations
+                for feedback in feedback_items:
+                    agent.memory.add_validation_justification(feedback)
+            
+            if valid_votes < total_validators / 2:
+                # Agent failed validation
                 agent.status = "fail"
                 logger.warning(
                     f"Agent {agent.id} fragment failed cross-validation "
-                    f"({valid_votes}/{total_validators} votes) and was removed."
+                    f"({valid_votes}/{total_validators} votes) - {len(feedback_items)} feedback items collected"
                 )
             else:
-                success_count +=1
+                success_count += 1
                 winner_mem = copy.deepcopy(agent.memory.short_term)
                 logger.info(
                     f"Agent {agent.id} fragment passed cross-validation "
-                    f"({valid_votes}/{total_validators} votes)."
+                    f"({valid_votes}/{total_validators} votes) - {len(feedback_items)} feedback items collected"
                 )
+        
+        # Handle the case where all agents fail
+        if success_count == 0 and best_agent is not None:
+            logger.warning("All agents failed validation. Selecting best performing agent as fallback.")
+            winner_mem = copy.deepcopy(best_agent.memory.short_term)
+            best_agent.status = "ongoing"  # Reset status for the best agent
+            success_count = 1
+        
         self.replace_fail(winner_mem)
         return success_count
 
@@ -122,7 +159,7 @@ class TaskExecuter:
 
         # 3) Vote across agents in parallel
         vote_tasks = [
-            self.agents[aid].vote_async(self.overall_task, self.current_task, candidates)
+            self.agents[aid].vote_async(self.current_task, candidates)
             for aid in agent_ids
         ]
         vote_results = await asyncio.gather(*vote_tasks, return_exceptions=True)
@@ -150,18 +187,12 @@ class TaskExecuter:
         return candidates[winner_idx]
 
     
-    async def branching_recursive_execution(
+    async def run(
         self,
         agent_ids: List[int],
-        recursion_depth: int = 0
-    ) -> str:
-        indent = "  " * recursion_depth
-        logger.info(f"{indent}▶ Depth {recursion_depth}: executing '{self.current_task}'")
 
-        # Base case: max recursion reached
-        if recursion_depth > self.max_recursion_depth:
-            logger.warning(f"{indent}Max recursion depth reached, retrieving best available memory.")
-            return None
+    ) -> str:
+        indent = "  "
 
         # reset all agents to "ongoing" status
         for agent in self.agents.values():
@@ -177,8 +208,6 @@ class TaskExecuter:
                 break
             end_phase1 = time.time()
             logger.info(f"{indent}Phase 1 (agent steps) completed in {end_phase1 - start_phase1:.2f} seconds")
-
-
 
             # Phase 2: cross model validation based on the agents status not failed and not complete one need to be vlidated by all others, if majority say fail then it is failed.
             start_phase2 = time.time()
