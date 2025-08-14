@@ -1,7 +1,6 @@
 import logging
 import asyncio
 from typing import List, Dict, Optional
-from taskManager import TaskManager
 from agent import Agent
 import copy
 import asyncio
@@ -164,7 +163,6 @@ class TaskExecuter:
             logger.warning(f"{indent}Max recursion depth reached, retrieving best available memory.")
             return None
 
-        split_needed = False
         # reset all agents to "ongoing" status
         for agent in self.agents.values():
             agent.setNewTask(self.current_task)
@@ -188,39 +186,9 @@ class TaskExecuter:
             success_count += len([agent for agent in self.agents.values() if agent.status == "complete"])
             end_phase2 = time.time()
             logger.info(f"{indent}Phase 2 (cross validation) completed in {end_phase2 - start_phase2:.2f} seconds")
-
-            if success_count <= len(agent_ids) / 2:
-                logger.info(f"{indent}Insufficient successes ({success_count}), splitting task.")
-                split_needed = True
-                break
           
 
-        # Phase 3: Recursive decomposition if needed
-        if split_needed:
-
-            for agent in self.agents.values():
-                agent.memory.clean_short()
-        
-            tm = TaskManager(objective=self.overall_task, current_task=self.overall_task)
-            decomposition = await tm.task_decomposer()
-            for sub in decomposition.get("subtasks", []):
-                desc = sub.get("objective")
-                if not desc:
-                    continue
-                logger.info(f"{indent}↘ Subtask: {desc}")
-                sub_exec = TaskExecuter(
-                    agents=self.agents,
-                    current_task=desc,
-                    overall_task=self.overall_task,
-                    max_rounds=self.max_rounds,
-                    max_recursion_depth=self.max_recursion_depth
-                )
-                await sub_exec.branching_recursive_execution(
-                    agent_ids=list(self.agents.keys()),
-                    recursion_depth=recursion_depth+1
-                )
-    
-        # Phase 4: All done or fallback to memory
+        # Phase 3: All done or fallback to memory
         await self.select_best(agent_ids)
 
         return None
